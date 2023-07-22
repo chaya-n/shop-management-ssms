@@ -11,6 +11,7 @@ class EmptyCartView extends StatelessWidget {
       child: SvgPicture.asset(
         'lib/images/empty_cart.svg',
         semanticsLabel: 'Empty Cart',
+        color: Colors.white,
       ),
     ));
   }

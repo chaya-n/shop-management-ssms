@@ -9,13 +9,15 @@ class ProductModel {
   double? price;
   bool? isAvailable;
   int? quantity;
+  String? category;
 
   ProductModel(
       {this.name,
       this.price,
       this.description,
       this.isAvailable,
-      this.quantity});
+      this.quantity,
+      this.category});
 
   factory ProductModel.fromJson(Map<String, dynamic> data) =>
       _$ProductModelFromJson(data);

@@ -1,6 +1,7 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:shop_management/firestore_handler.dart';
-import 'package:shop_management/models/user/user_model.dart';
+import 'package:shop_management/models/product/product_model.dart';
 
-final cartItemsProvider = FutureProvider.family(
-    (ref, UserModel user) => FirestoreHandler().getCartItems(user));
+final cartItemsProvider =
+    StreamProvider((ref) => FirestoreHandler().getUsersCartStream());

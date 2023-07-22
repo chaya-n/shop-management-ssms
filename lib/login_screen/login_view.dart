@@ -1,12 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_management/login_screen/firebaseAuth_handler.dart';
+import 'package:shop_management/login_screen/signin_view.dart';
+import 'package:shop_management/shared_widgets/snackbars.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends ConsumerWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
     return Scaffold(
@@ -37,8 +41,14 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 32.0),
               ElevatedButton(
                 onPressed: () {
-                  Auth().logInUser(
-                      emailController.text, passwordController.text, context);
+                  Auth()
+                      .logInUser(emailController.text, passwordController.text,
+                          context, ref)
+                      .then((value) => (value == 1)
+                          ? ScaffoldMessenger.of(context)
+                              .showSnackBar(CustomSnackBars.successSnackBar)
+                          : ScaffoldMessenger.of(context).showSnackBar(
+                              CustomSnackBars.failureLogInSnackBar));
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -66,7 +76,9 @@ class LoginPage extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      context.push('/SignIn');
+                      // context.push('/SignIn');
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const SignInView()));
                     },
                     child: Text(
                       'Register',

@@ -1,0 +1,83 @@
+import 'package:flutter/material.dart';
+import 'package:shop_management/admin/edit_products_screen/edit_product_page.dart';
+import 'package:shop_management/firestore_handler.dart';
+import 'package:shop_management/models/product/product_model.dart';
+import 'package:shop_management/shared_widgets/colours.dart';
+import 'package:shop_management/shared_widgets/snackbars.dart';
+import 'package:shop_management/user/explore_screen/product_page.dart';
+
+class EditProductCard extends StatelessWidget {
+  final ProductModel productModel;
+  const EditProductCard({super.key, required this.productModel});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProductEditPage(product: productModel)));
+      },
+      child: Card(
+        color: CustomColours.secondaryColour,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(25))),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Image(image: AssetImage('lib/images/img1.png')),
+                )),
+            Flexible(
+              flex: 2,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    productModel.name ?? '..',
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  Text(
+                    '₹  ${productModel.price}',
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  onTap: () {
+                    try {
+                      FirestoreHandler()
+                          .deleteProduct(productModel)
+                          .then((value) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(CustomSnackBars.successSnackBar);
+                      });
+                    } catch (e) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(CustomSnackBars.failureSnackBar);
+                    }
+                  },
+                  child: const Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
+                )),
+          ],
+        ),
+      ),
+    );
+  }
+}

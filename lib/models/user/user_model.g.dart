@@ -16,6 +16,9 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
           .toList(),
       password: json['password'] as String?,
       email: json['email'] as String?,
+      categoryPref: (json['categoryPref'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -26,4 +29,5 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'cartItems': instance.cartItems,
       'email': instance.email,
       'password': instance.password,
+      'categoryPref': instance.categoryPref,
     };

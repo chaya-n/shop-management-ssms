@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:shop_management/firestore_handler.dart';
 import 'package:shop_management/models/product/product_model.dart';
+import 'package:shop_management/shared_widgets/colours.dart';
 import 'package:shop_management/user/explore_screen/product_page.dart';
 
 class ExploreCard extends StatelessWidget {
-  final String email;
   final ProductModel productModel;
-  const ExploreCard(
-      {super.key, required this.productModel, required this.email});
+  const ExploreCard({super.key, required this.productModel});
 
   @override
   Widget build(BuildContext context) {
@@ -15,27 +15,45 @@ class ExploreCard extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    ProductPage(email: email, product: productModel)));
+                builder: (context) => ProductPage(product: productModel)));
       },
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 200,
-            width: 300,
-            child: Image(image: AssetImage('lib/images/img1.png')),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(flex: 3, child: Text(productModel.name ?? '..')),
-                Expanded(flex: 1, child: Text(productModel.price.toString())),
-              ],
+      child: Card(
+        color: CustomColours.secondaryColour,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(25))),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Image(image: AssetImage('lib/images/img1.png')),
+                )),
+            Flexible(
+              flex: 1,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    productModel.name ?? '..',
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  Text(
+                    '₹  ${productModel.price}',
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_management/firestore_handler.dart';
 import 'package:shop_management/login_screen/firebaseAuth_handler.dart';
 import 'package:shop_management/models/user/user_model.dart';
+import 'package:shop_management/shared_widgets/snackbars.dart';
+import 'package:shop_management/user/user_origin.dart';
 
-class SignInView extends StatelessWidget {
+class SignInView extends ConsumerWidget {
   const SignInView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final firstNameController = TextEditingController();
     final lastNameController = TextEditingController();
     final phoneController = TextEditingController();
@@ -63,7 +67,7 @@ class SignInView extends StatelessWidget {
             ),
             const SizedBox(height: 24.0),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 Auth a = Auth();
                 UserModel user = UserModel(
                   firstName: firstNameController.text,
@@ -74,9 +78,22 @@ class SignInView extends StatelessWidget {
                   email: emailController.text,
                   password: passwordController.text,
                 );
-                a.signUpNewUser(emailController.text, passwordController.text);
-                FirestoreHandler().addUserToFirestore(user);
-                context.go('/UserHome');
+
+                try {
+                  final userSignedIn = await a.signUpNewUser(
+                      emailController.text,
+                      passwordController.text,
+                      context,
+                      ref);
+                  if (userSignedIn != null) {
+                    FirestoreHandler().addUserToFirestore(user);
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(CustomSnackBars.successSnackBar);
+                  }
+                } catch (e) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(CustomSnackBars.failureSignInSnackBar);
+                }
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),

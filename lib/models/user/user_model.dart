@@ -12,15 +12,18 @@ class UserModel {
   List<ProductModel> cartItems;
   String? email;
   String? password;
+  List<String>? categoryPref;
 
-  UserModel(
-      {this.firstName,
-      this.lastName,
-      this.phone,
-      this.isAdmin,
-      required this.cartItems,
-      this.password,
-      this.email});
+  UserModel({
+    this.firstName,
+    this.lastName,
+    this.phone,
+    this.isAdmin,
+    required this.cartItems,
+    this.password,
+    this.email,
+    this.categoryPref,
+  });
 
   factory UserModel.fromJson(Map<String, dynamic> data) =>
       _$UserModelFromJson(data);
