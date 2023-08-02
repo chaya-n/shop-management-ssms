@@ -29,3 +29,5 @@ Each page for the users has a refresh button,slide your fingers from top to bott
 in google chrome).
 In the explore page, search works but be mindful of the difference between 'Example' and 'Example '.
 The categories tabs do not work, again since I couldnt finish it on time.
+
+
