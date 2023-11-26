@@ -6,7 +6,7 @@ Recrutiment task for SSMS
 
 ## Getting Started
 
-The method for authentication if only using an email and a password. Email must be of valid format 
+The method for authentication is email and password. Email must be of valid format 
 and the password must be of 6 characters atleast.
 
 I have used FirsebaseAuth and Firestore for this project.
